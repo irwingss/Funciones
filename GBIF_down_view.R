@@ -1,6 +1,8 @@
 GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
                           occ_data_limit = 100000, separacion_puntos=10,
                           df_CRS=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")){
+  
+  # Paquetes
   if (!require("rgbif")) install.packages("rgbif") 
   if (!require("scrubr")) install.packages("scrubr") 
   if (!require("openxlsx")) install.packages("openxlsx") 
@@ -16,6 +18,7 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
                       "sf", "rgdal", "stringr", "spThin", "tidyverse")
   pacman::p_load(char = paquetes)
   
+  # ------------------------------------------------------------------- -
   # Descargar la data
   gbif_data <- occ_data(scientificName = Especie, 
                         hasCoordinate = TRUE, 
@@ -66,24 +69,33 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
   train$check <- NULL
   test$check <- NULL
   
+  # ------------------------------------------------------------------- -
+  # Creación de bases de datos en la carpeta de trabajo
   write.csv(all, paste0(Especie,"_thin1","_joint.csv"), row.names = FALSE)
   write.csv(train, paste0(Especie,"_thin1","_train.csv"), row.names = FALSE)
   write.csv(test, paste0(Especie,"_thin1","_test.csv"), row.names = FALSE)
   
+  # ------------------------------------------------------------------- -
+  # Mapa
   if (mapview == TRUE){
     data_temp <- occurrences %>% 
       select(scientificName, decimalLongitude,
              decimalLatitude, eventDate, country, 
              locality, elevation)
+    
     coord_mapview <<- st_as_sf(data_temp,
                                coords = c("decimalLongitude", 
                                           "decimalLatitude"),
                                crs =  df_CRS)
     
     mapview::mapview(coord_mapview, layer.name = Especie)
-    print("En el mapa se muestran los puntos de presencia luego del proceso de limpieza de datos y de thinning (reducción de puntos cercanos en base al argumento separacion_puntos expresado en km [10km por defecto])")
+    
+    # Mensaje
+    cat("En el mapa se muestran los puntos de presencia luego del proceso de limpieza de datos y de thinning (reducción de puntos cercanos en base al argumento separacion_puntos expresado en km [10km por defecto])")
     
   } else if (mapview == FALSE) {
     print("No se solicitó imprimir mapa")
   }
+  
+  # FIN
 }
