@@ -1,6 +1,6 @@
 GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
                           occ_data_limit = 100000, separacion_puntos=10,
-                          CRS=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")){
+                          df_CRS=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")){
   if (!require("rgbif")) install.packages("rgbif") 
   if (!require("scrubr")) install.packages("scrubr") 
   if (!require("openxlsx")) install.packages("openxlsx") 
@@ -78,7 +78,7 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
     coord_mapview <<- st_as_sf(data_temp,
                                coords = c("decimalLongitude", 
                                           "decimalLatitude"),
-                               crs =  CRS)
+                               crs =  df_CRS)
     
     mapview::mapview(coord_mapview, layer.name = Especie)
     
