@@ -71,14 +71,11 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
   write.csv(test, paste0(Especie,"_thin1","_test.csv"), row.names = FALSE)
   
   if (mapview == TRUE){
-    coord_mapview <<- st_as_sf(occurrences %>% 
-                                 select(scientificName,
-                                        decimalLongitude,
-                                        decimalLatitude,
-                                        eventDate,
-                                        country, 
-                                        locality,
-                                        elevation),
+    data_temp <- occurrences %>% 
+      select(scientificName, decimalLongitude,
+             decimalLatitude, eventDate, country, 
+             locality, elevation)
+    coord_mapview <<- st_as_sf(data_temp,
                                coords = c("decimalLongitude", 
                                           "decimalLatitude"),
                                crs =  CRS)
