@@ -50,7 +50,7 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
        reps = 10, write.files = TRUE,
        max.files = 1, out.base = Especie,
        out.dir = getwd(), write.log.file = FALSE, 
-       verbose = TRUE)
+       verbose = FALSE)
   
   
   # Separar la base en entrenamiento 75% y testeo 25%
@@ -81,6 +81,7 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
                                crs =  df_CRS)
     
     mapview::mapview(coord_mapview, layer.name = Especie)
+    print("En el mapa se muestran los puntos de presencia luego del proceso de limpieza de datos y de thinning (reducción de puntos cercanos en base al argumento separacion_puntos expresado en km [10km por defecto])")
     
   } else if (mapview == FALSE) {
     print("No se solicitó imprimir mapa")
