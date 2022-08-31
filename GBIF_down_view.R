@@ -90,6 +90,9 @@ GBIF_down_view <-function(Especie, mapview=TRUE, seed=123,
     
     mapview::mapview(coord_mapview, layer.name = Especie)
     
+    #En el mapa se muestran los puntos de presencia luego del proceso 
+    # de limpieza de datos y de thinning (reducción de puntos cercanos 
+    # en base al argumento separacion_puntos expresado en km [10km por defecto])
   }
   # FIN
 }
